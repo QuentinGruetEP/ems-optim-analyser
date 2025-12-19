@@ -4,6 +4,7 @@
 [![CI](https://github.com/QuentinGruetEP/ems-optim-analyser/workflows/CI/badge.svg)](https://github.com/QuentinGruetEP/ems-optim-analyser/actions/workflows/ci.yml)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![codecov](https://codecov.io/gh/QuentinGruetEP/ems-optim-analyser/graph/badge.svg?token=s04F9n0lSW)](https://codecov.io/gh/QuentinGruetEP/ems-optim-analyser)
 
 Analysis and visualization tool for EMS microgrid optimization results. Visualize, replay, and compare CPLEX optimization runs from IBM Watson Machine Learning.
 
