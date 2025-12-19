@@ -13,16 +13,16 @@ class TestConfig:
         """Test loading configuration from environment variables."""
         monkeypatch.setenv("IBM_API_KEY", "test_key")
         monkeypatch.setenv("IBM_SPACE_ID", "test_space")
-        
+
         config = Config.from_env()
-        
+
         assert config.ibm.api_key == "test_key"
         assert config.ibm.space_id == "test_space"
 
     def test_config_defaults(self):
         """Test default configuration values."""
         config = Config.from_env()
-        
+
         assert config.ibm.api_domain == "https://us-south.ml.cloud.ibm.com"
         assert config.ibm.hardware_spec_name == "S"
         assert config.app.theme == "Arc"
@@ -30,7 +30,7 @@ class TestConfig:
     def test_config_to_dict(self, sample_config):
         """Test conversion to dictionary."""
         config_dict = sample_config.to_dict()
-        
+
         assert "API_KEY" in config_dict
         assert "SPACE_ID" in config_dict
         assert config_dict["API_KEY"] == "test_api_key"
@@ -39,9 +39,9 @@ class TestConfig:
         """Test loading from .env file."""
         env_file = tmp_path / ".env"
         env_file.write_text("TEST_VAR=test_value\n# Comment\nANOTHER_VAR=another_value")
-        
+
         load_env_file(str(env_file))
-        
+
         assert os.getenv("TEST_VAR") == "test_value"
         assert os.getenv("ANOTHER_VAR") == "another_value"
 

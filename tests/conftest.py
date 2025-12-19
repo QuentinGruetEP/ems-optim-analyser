@@ -14,18 +14,18 @@ def sample_config():
         api_domain="https://test.ibm.com",
         iam_domain="https://test-iam.ibm.com",
     )
-    
+
     paths = PathConfig(
         models_path=Path("tests/data/models"),
         config_path=Path("tests/data/config"),
         output_path=Path("tests/output"),
     )
-    
+
     app = AppConfig(
         theme="Arc",
         log_level="DEBUG",
     )
-    
+
     return Config(ibm=ibm, paths=paths, app=app)
 
 
@@ -43,21 +43,9 @@ def sample_json_data():
     return {
         "decision_optimization": {
             "input_data": [
-                {
-                    "id": "OPERATION.csv",
-                    "fields": ["param", "value"],
-                    "values": [["test_param", "test_value"]]
-                }
+                {"id": "OPERATION.csv", "fields": ["param", "value"], "values": [["test_param", "test_value"]]}
             ],
-            "output_data": [
-                {
-                    "id": "RESULTS.csv",
-                    "fields": ["time", "power"],
-                    "values": [[0, 100], [1, 150]]
-                }
-            ],
-            "solve_state": {
-                "solve_status": "optimal_solution"
-            }
+            "output_data": [{"id": "RESULTS.csv", "fields": ["time", "power"], "values": [[0, 100], [1, 150]]}],
+            "solve_state": {"solve_status": "optimal_solution"},
         }
     }
