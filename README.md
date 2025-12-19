@@ -1,205 +1,114 @@
-# Optim Analyser
+# EMS Optim Analyser
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**A powerful analysis and visualization tool for EMS microgrid optimization results.**
+Analysis and visualization tool for EMS microgrid optimization results. Visualize, replay, and compare CPLEX optimization runs from IBM Watson Machine Learning.
 
-Optim Analyser helps you visualize, analyze, and debug optimization runs from the [ems-optimizer](https://github.com/energypool/ems-optimizer) project. It provides both a GUI application and CLI tools for working with IBM Watson ML optimization jobs.
+**Key Features**: Interactive Plotly visualizations • Local/remote replay • Multi-job comparison • Color-blind palettes • Excel export • GUI + CLI
 
-## 🎯 Features
+**For**: Optimization engineers debugging microgrid behavior • Data analysts visualizing energy flows
 
-- **📊 Visualization**: Interactive plotly-based visualizations of optimization results
-- **🔄 Replay**: Re-run optimization jobs locally or on IBM Watson ML
-- **📈 Comparison**: Compare multiple optimization runs side-by-side
-- **🎨 Customization**: Color-blind friendly palettes and configurable plotting
-- **💾 Export**: Convert IBM Watson ML JSON output to Excel format
-- **🖥️ Dual Interface**: Both GUI (Tkinter) and CLI available
-- **📦 Standalone**: Builds to Windows executable with PyInstaller
+## Quick Start
 
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Python 3.10 or higher
-- (Optional) IBM Watson Machine Learning account for remote optimization
-
-### Installation
-
-#### For Users
+**Prerequisites**: Python 3.10+ | IBM Watson ML account (optional) | CPLEX (optional)
 
 ```bash
-# Install from source
+# Clone and install
 git clone https://github.com/energypool/ems-optim-analyser.git
 cd ems-optim-analyser
-pip install .
-
-# Or install in development mode
-pip install -e ".[dev]"
-```
-
-#### For Developers
-
-```bash
-git clone https://github.com/energypool/ems-optim-analyser.git
-cd ems-optim-analyser
-
-# Create virtual environment
 python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+.venv\Scripts\activate  # or: source .venv/bin/activate (Linux/Mac)
+pip install -e .
 
-# Install with dev dependencies
-pip install -e ".[dev,build]"
-
-# Set up pre-commit hooks
-pre-commit install
+# Optional: Add IBM credentials to .env
+echo "IBM_API_KEY=your_key" >> .env
+echo "IBM_SPACE_ID=your_space" >> .env
 ```
 
-### Configuration
+## Usage
 
-1. Copy the example configuration:
-   ```bash
-   cp .env.example .env
-   ```
+**GUI**: Launch with `python -m optim_analyser`
 
-2. Edit `.env` with your IBM Watson ML credentials (if needed):
-   ```bash
-   IBM_API_KEY=your_api_key_here
-   IBM_SPACE_ID=your_space_id_here
-   ```
-
-### Running the Application
-
-#### GUI Mode
+**CLI Commands**:
 ```bash
-# Using installed command
-optim-analyser-gui
-
-# Or directly with Python
-python -m optim_analyser
+python -m optim_analyser display results.json                    # Visualize results
+python -m optim_analyser replay-local input.json --output ./out  # Replay with CPLEX
+python -m optim_analyser replay-remote input.json --output ./out # Replay on IBM Watson ML
+python -m optim_analyser compare job1.json job2.json job3.json   # Compare multiple runs
+python -m optim_analyser --help                                  # Show all commands
 ```
 
-#### CLI Mode
-```bash
-# Display results from JSON
-optim-analyser display path/to/results.json
-
-# Replay optimization
-optim-analyser replay path/to/input.json --output results/
-
-# Compare multiple runs
-optim-analyser compare run1.json run2.json run3.json
-
-# Convert JSON to Excel
-optim-analyser convert path/to/results.json
-```
-
-## 📖 Documentation
-
-Full documentation is available in the [docs/](docs/) directory:
-
-- [User Guide](docs/user-guide.md) - How to use the application
-- [Configuration](docs/configuration.md) - Configuration options explained
-- [Development Guide](docs/development.md) - Contributing and development setup
-- [Architecture](docs/architecture.md) - Technical architecture overview
-
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 ems-optim-analyser/
 ├── src/optim_analyser/      # Main package
-│   ├── app/                 # GUI components (Tkinter)
-│   ├── ibm/                 # IBM Watson ML integration
-│   ├── optim/               # Optimization logic and CPLEX integration
-│   ├── analysis/            # Visualization and analysis
+│   ├── models.py            # Domain models (dataclasses)
+│   ├── errors.py            # Error hierarchy
 │   ├── config.py            # Configuration management
-│   └── cli.py               # Command-line interface
-├── tests/                   # Test suite
-├── resources/               # Configuration files, models, icons
-├── docs/                    # Documentation
-└── scripts/                 # Utility scripts
+│   ├── analysis/            # Visualization and analysis
+│   │   ├── services/        # Business logic (Display, Replay, Comparison)
+│   │   ├── display.py       # Plotly visualization
+│   │   └── compare.py       # Comparison logic
+│   ├── ibm/                 # IBM Watson ML integration
+│   │   ├── modelDeploymentWithRestClient.py
+│   │   ├── jobWMLRestClient.py
+│   │   └── optimizationIBM.py
+│   ├── optim/               # CPLEX optimization
+│   │   ├── dataframes.py    # Data transformation
+│   │   ├── optimization.py  # Optimization prep
+│   │   └── replay.py        # Local replay
+│   ├── app/                 # GUI (Tkinter)
+│   └── cli.py               # CLI
+├── tests/                   # pytest suite
+├── resources/               # CPLEX models, configs
+├── docs/architecture.md     # Technical architecture
+└── scripts/build_executable.py  # Build standalone .exe
 ```
 
-## 🔧 Development
+See [docs/architecture.md](docs/architecture.md) for technical details.
 
-### Running Tests
-
-```bash
-# Run all tests
-pytest
-
-# Run with coverage
-pytest --cov=optim_analyser --cov-report=html
-
-# Run specific test categories
-pytest -m unit              # Unit tests only
-pytest -m integration       # Integration tests only
-pytest -m "not slow"        # Skip slow tests
-```
-
-### Code Quality
+## Development
 
 ```bash
-# Format code
-black src/ tests/
-isort src/ tests/
+# Setup
+pip install -e ".[dev]"
+pre-commit install
 
-# Lint
-flake8 src/ tests/
-mypy src/
+# Test
+pytest                                          # All tests
+pytest --cov=optim_analyser --cov-report=html  # With coverage
 
-# Or use pre-commit for all checks
-pre-commit run --all-files
-```
+# Quality checks (runs on commit)
+black src/ tests/                               # Format
+mypy src/                                       # Type check
+flake8 src/ tests/                              # Lint
+bandit -r src/                                  # Security scan
 
-### Building Executable
-
-```bash
-# Build standalone Windows executable
+# Build standalone .exe
 python scripts/build_executable.py
-
-# Output will be in dist/OptimAnalyser/
 ```
 
-## 🔗 Integration with ems-optimizer
+## Troubleshooting
 
-This tool is designed to work with the [ems-optimizer](https://github.com/energypool/ems-optimizer) project. 
+**GUI won't launch**: `python -c "import optim_analyser"` to verify installation
 
-**Workflow:**
-1. ems-optimizer deploys CPLEX models to IBM Watson ML
-2. Models process microgrid optimization jobs
-3. Optim Analyser visualizes and analyzes the results
+**Import errors**: Ensure `pip install -e .` and Python 3.10+
 
-See the [integration guide](docs/integration.md) for details.
+**IBM connection fails**: Check `.env` credentials and network
 
-## 📝 Changelog
+## Contributing
 
-See [CHANGELOG.md](CHANGELOG.md) for version history and release notes.
+Fork → Create branch → Add tests → Run `pre-commit run --all-files` → Commit → Open PR
 
-## 🤝 Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+## License & Support
 
-## 📄 License
+**License**: Copyright © 2025 Energy Pool. Proprietary and confidential.
 
-Copyright © 2025 Energy Pool. All rights reserved.
+**Support**: [GitHub Issues](https://github.com/energypool/ems-optim-analyser/issues) | [CHANGELOG.md](CHANGELOG.md)
 
-This software is proprietary and confidential. Unauthorized copying, distribution, or use is strictly prohibited.
-
-## 👥 Authors
-
-- **Energy Pool Development Team**
-- Maintainer: Quentin Gruet
-
-## 🆘 Support
-
-For issues, questions, or feature requests:
-- Open an issue on [GitHub Issues](https://github.com/energypool/ems-optim-analyser/issues)
-- Contact the development team at dev@energypool.eu
-
-## 🙏 Acknowledgments
-
-- Built with IBM Watson Machine Learning
-- Uses CPLEX optimization engine
-- Visualization powered by Plotly
+**Built with**: IBM Watson Machine Learning • CPLEX • Plotly • Python 3.10+

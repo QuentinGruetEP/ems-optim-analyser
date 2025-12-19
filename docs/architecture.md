@@ -1,192 +1,178 @@
-# Optim Analyser Architecture
+# Architecture
 
 ## Overview
 
-Optim Analyser is a desktop application for analyzing and visualizing EMS microgrid optimization results. It provides both GUI and CLI interfaces for working with IBM Watson ML optimization jobs.
+EMS Optim Analyser follows Domain-Driven Design principles with clean separation of concerns:
 
-## Architecture Diagram
+- **Domain Layer**: Core business models and errors
+- **Service Layer**: Business logic orchestration
+- **Infrastructure Layer**: External integrations (IBM Watson ML, CPLEX)
+- **Presentation Layer**: GUI and CLI interfaces
+
+## Project Structure
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     User Interface Layer                     │
-├──────────────────────────────┬──────────────────────────────┤
-│         GUI (Tkinter)        │         CLI (argparse)        │
-│   - App framework            │   - Command handlers          │
-│   - Menu navigation          │   - Batch processing          │
-│   - Interactive forms        │   - Script automation         │
-└──────────────────────────────┴──────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Application Layer                         │
-├──────────────────┬──────────────────┬─────────────────────┐│
-│   Analysis       │   Optimization   │   Configuration     ││
-│   - Visualization│   - Local exec   │   - Env management  ││
-│   - Comparison   │   - Remote exec  │   - Path handling   ││
-│   - Export       │   - Replay       │   - Validation      ││
-└──────────────────┴──────────────────┴─────────────────────┘│
-                        │                                      │
-                        ▼                                      │
-┌─────────────────────────────────────────────────────────────┘
-│                    Integration Layer                         │
-├──────────────────────────────┬──────────────────────────────┤
-│   IBM Watson ML              │   CPLEX Optimizer            │
-│   - Model deployment         │   - Local execution          │
-│   - Job submission           │   - Model management         │
-│   - Result retrieval         │   - Data conversion          │
-└──────────────────────────────┴──────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      Data Layer                              │
-├────────────────────┬────────────────────┬───────────────────┤
-│  Input/Output      │  Configuration     │  Resources        │
-│  - JSON files      │  - Excel configs   │  - CPLEX models   │
-│  - Excel files     │  - Plot params     │  - Icons          │
-│  - Visualizations  │  - Deployments     │  - Themes         │
-└────────────────────┴────────────────────┴───────────────────┘
+src/optim_analyser/
+├── models.py              # Domain models (dataclasses)
+├── errors.py              # Error hierarchy with context
+├── config.py              # Configuration management
+├── analysis/              # Analysis and visualization
+│   ├── services/          # Business logic services
+│   │   ├── display_service.py      # Visualization generation
+│   │   ├── replay_service.py       # Optimization replay
+│   │   └── comparison_service.py   # Multi-job comparison
+│   ├── analyse.py         # Legacy functions (facade)
+│   ├── display.py         # Plotly visualization
+│   ├── compare.py         # Comparison logic
+│   └── subplot.py         # Subplot layouts
+├── ibm/                   # IBM Watson ML integration
+│   ├── modelDeploymentWithRestClient.py  # Model deployment
+│   ├── jobWMLRestClient.py               # Job execution
+│   ├── optimizationIBM.py                # Orchestration
+│   └── getJobsStatus.py                  # Job monitoring
+├── optim/                 # CPLEX optimization
+│   ├── dataframes.py      # Data transformation
+│   ├── optimization.py    # Optimization preparation
+│   ├── replay.py          # Local CPLEX execution
+│   └── path.py            # Resource path resolution
+├── app/                   # Tkinter GUI
+│   ├── app.py             # Main window
+│   ├── appMenu.py         # Menu bar
+│   ├── appDisplayRun.py   # Display tab
+│   ├── appCompare.py      # Comparison tab
+│   └── appOptimJob.py     # Optimization tab
+├── cli.py                 # Command-line interface
+└── launchApp.py           # GUI entry point
 ```
 
-## Module Structure
+## Domain Models
 
-### `optim_analyser.app`
-**Purpose**: GUI components using Tkinter
+**File**: [models.py](../src/optim_analyser/models.py)
 
-**Components**:
-- `app.py` - Main application framework
-- `appMenu.py` - Menu navigation
-- `appDisplayRun.py` - Display optimization results
-- `appCompare.py` - Compare multiple runs
-- `appOptimJob.py` - Job submission interface
-- `appForceBehavior.py` - Override optimization parameters
+Type-safe dataclasses for all business entities:
 
-**Dependencies**: tkinter, ttkthemes, PIL
+**Core Models**:
+- `OptimizationJob` - Complete optimization job
+- `OptimizationData` - Time-series data
+- `ModelInfo` - CPLEX model metadata
 
-### `optim_analyser.ibm`
-**Purpose**: IBM Watson ML integration
+**Configuration**:
+- `ReplayConfig` - Replay settings
+- `DisplayConfig` - Visualization settings
+- `ComparisonConfig` - Comparison settings
+- `PlotParameters` - Plot customization
 
-**Components**:
-- `optimizationIBM.py` - Main orchestration functions
-- `modelDeploymentWithRestClient.py` - Model deployment
-- `jobWMLRestClient.py` - Job submission and retrieval
-- `getJobsStatus.py` - Job status polling
+**IBM Integration**:
+- `IBMDeployment` - Watson ML deployment
+- `IBMJobSubmission` - Job submission
 
-**Dependencies**: requests, ibm_watson_machine_learning (future)
+**Results**:
+- `ComparisonResult` - Multi-job analysis
+- `VisualizationResult` - Generated HTML info
 
-### `optim_analyser.optim`
-**Purpose**: Optimization logic and CPLEX integration
+**Enums**:
+- `JobStatus` - Job state
+- `OptimizationMode` - Local/remote execution
 
-**Components**:
-- `optimization.py` - Local CPLEX execution
-- `replay.py` - Replay existing optimizations
-- `path.py` - Resource path management
-- `dataframes.py` - Data structure conversions
+## Error Hierarchy
 
-**Dependencies**: pandas, numpy
+**File**: [errors.py](../src/optim_analyser/errors.py)
 
-### `optim_analyser.analysis`
-**Purpose**: Visualization and analysis
+All exceptions inherit from `OptimAnalyserError` with error codes and context:
 
-**Components**:
-- `analyse.py` - Main analysis functions
-- `display.py` - Visualization generation
-- `compare.py` - Multi-run comparison
-- `subplot.py` - Plot utilities
-- `colors.py` - Color palette management
+- `ConfigurationError` - Invalid settings
+- `DataError` - Data loading failures
+- `ModelReferenceError` - Missing CPLEX models
+- `OptimizationFail` - CPLEX execution errors
+- `IBMConnectionError` - Network/auth issues
+- `IBMJobError` - Remote job failures
+- `ValidationError` - Input validation
+- `ResourceNotFoundError` - Missing files
+- `VisualizationError` - Plot generation failures
 
-**Dependencies**: plotly, pandas, numpy
+## Service Layer
 
-### `optim_analyser.config`
-**Purpose**: Configuration management
+**Directory**: [analysis/services/](../src/optim_analyser/analysis/services/)
 
-**Responsibilities**:
-- Load environment variables
-- Parse .env files
-- Validate configuration
-- Provide typed config objects
+### DisplayService
+Visualization generation:
+- `display_from_json()` - Display from JSON file
+- `display_from_excel()` - Display from Excel files
 
-## Design Principles
+### ReplayService
+Optimization replay:
+- `replay_local()` - Local CPLEX replay
+- `replay_remote()` - IBM Watson ML replay
 
-### 1. Separation of Concerns
-- GUI and CLI are independent interfaces to the same core logic
-- IBM integration is isolated from visualization logic
-- Configuration is centralized and environment-agnostic
+### ComparisonService
+Multi-job comparison:
+- `compare_jobs_from_folder()` - Compare folder of jobs
+- `compare_specific_jobs()` - Compare specific jobs
 
-### 2. Dependency Injection
-- Configuration is injected rather than globally accessed
-- IBM clients are created with explicit credentials
-- File paths are configurable
+All services use domain models and raise specific exceptions.
 
-### 3. Testability
-- Each module has a clear interface
-- External dependencies are mockable
-- Integration tests separate from unit tests
+## IBM Watson ML Integration
 
-### 4. Extensibility
-- New visualization types can be added to `analysis`
-- New IBM features can be added to `ibm`
-- New GUI screens can be added to `app`
+### WMLModelDeploymentClient
+[modelDeploymentWithRestClient.py](../src/optim_analyser/ibm/modelDeploymentWithRestClient.py)
+- Model upload
+- Deployment creation
+- Version management
 
-## Data Flow
+### WMLJobClient
+[jobWMLRestClient.py](../src/optim_analyser/ibm/jobWMLRestClient.py)
+- Job submission
+- Status monitoring
+- Result retrieval
 
-### Display Workflow
-```
-JSON File → load_json() → parse_data() → create_dataframes() 
-    → generate_plots() → save_html() → Display
-```
+### optimizationIBM
+[optimizationIBM.py](../src/optim_analyser/ibm/optimizationIBM.py)
+- Orchestrates deployment + execution
+- `replay_optimization_cloud()` - Full remote workflow
+- `run_optimization_distant()` - Submit optimization
 
-### Replay Workflow (Local)
-```
-Input JSON → extract_parameters() → run_cplex_local()
-    → collect_results() → generate_output_json() → Display
-```
+## CPLEX Integration
 
-### Replay Workflow (Remote)
-```
-Input JSON → create_deployment() → submit_job() 
-    → poll_status() → retrieve_results() → Display
-```
+### dataframes.py
+Data transformation: JSON ↔ pandas ↔ Excel
 
-## Configuration Strategy
+### optimization.py
+- `.mod` and `.dat` file generation
+- Cost extension injection
+- Excel input preparation
 
-### Environment Variables
-Primary configuration source. Loaded from:
-1. System environment
-2. `.env` file in current directory
-3. `.env` file in parent directories
+### replay.py
+- Local CPLEX execution
+- Solution parsing
+- Excel export
 
-### Excel Configuration
-Domain-specific configuration:
-- `deployment_list.xlsx` - Model/microgrid mappings
-- `plot_param.xlsx` - Visualization parameters
+### path.py
+- Resource path resolution
+- Input/output path generation
+- Parameter extraction
 
-### Code Configuration
-Hardcoded defaults in `config.py` for sane fallbacks
+## User Interfaces
 
-## Error Handling
+### GUI (Tkinter)
+Tabbed interface with:
+- Display tab - Visualize results
+- Replay tab - Re-run optimizations
+- Compare tab - Multi-job comparison
+- Optimization tab - Submit new jobs
 
-### User-Facing Errors
-- Clear error messages in GUI dialogs
-- Helpful error messages in CLI
-- Suggestions for resolution
+Launch: `python -m optim_analyser`
 
-### Developer Errors
-- Detailed stack traces in logs
-- Context information preserved
-- Errors propagated with context
+### CLI (argparse)
+Commands:
+- `display` - Generate visualizations
+- `replay-local` - Local CPLEX replay
+- `replay-remote` - IBM remote replay
+- `compare` - Compare jobs
 
-## Future Enhancements
+Launch: `python -m optim_analyser --help`
 
-### Planned Features
-1. **Plugin System** - Allow custom visualization types
-2. **Database Backend** - Store optimization history
-3. **Web Interface** - Browser-based UI alternative
-4. **Real-time Monitoring** - Live job status updates
-5. **Batch Processing** - Parallel job submission
+## Testing
 
-### Technical Debt
-1. Refactor IBM client to use official SDK
-2. Add comprehensive type hints
-3. Improve error handling consistency
-4. Add input validation layer
-5. Create data model abstraction
+- **Unit Tests**: Service layer, utilities
+- **Integration Tests**: End-to-end workflows
+- **CI/CD**: GitHub Actions on every push

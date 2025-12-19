@@ -81,3 +81,8 @@ build/
 # Personal data files - DO NOT COMMIT
 **/OneDrive*
 *.personal.*
+
+# Prevent data file duplication in src/ (canonical location is resources/)
+src/optim_analyser/ibm/*.yml
+src/optim_analyser/app/*.yml
+src/optim_analyser/app/*.png

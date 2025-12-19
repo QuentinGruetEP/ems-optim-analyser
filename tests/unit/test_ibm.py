@@ -13,7 +13,7 @@ from optim_analyser.ibm.optimizationIBM import (
 class TestIBMIntegration:
     """Test IBM Watson ML integration functions."""
 
-    @patch("optim_analyser.ibm.modelDeploymentWithRestClient.WMLRestClient")
+    @patch("optim_analyser.ibm.modelDeploymentWithRestClient.WMLModelDeploymentClient")
     def test_create_model_and_deployment(self, mock_client, sample_config):
         """Test model creation and deployment."""
         # Setup mock
