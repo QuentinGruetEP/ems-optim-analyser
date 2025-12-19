@@ -3,9 +3,9 @@ import shutil
 import time
 import tkinter as tk
 
-from optim_analyser.optim import dataframes, path, optimization, replay
-from optim_analyser.analysis import display, compare
+from optim_analyser.analysis import compare, display
 from optim_analyser.ibm import optimizationIBM
+from optim_analyser.optim import dataframes, optimization, path, replay
 
 
 def display_from_json(json_path: str, output_folder: str, color_blind: bool = False) -> None:

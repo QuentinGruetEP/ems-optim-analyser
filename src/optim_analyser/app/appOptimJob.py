@@ -1,5 +1,5 @@
 from tkinter import ttk
-from tkinter.filedialog import askopenfilename, askdirectory
+from tkinter.filedialog import askdirectory, askopenfilename
 
 
 class OptimJob:

@@ -1,8 +1,10 @@
 """Pytest configuration and shared fixtures."""
 
-import pytest
 from pathlib import Path
-from optim_analyser.config import Config, IBMConfig, PathConfig, AppConfig
+
+import pytest
+
+from optim_analyser.config import AppConfig, Config, IBMConfig, PathConfig
 
 
 @pytest.fixture

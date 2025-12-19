@@ -1,8 +1,9 @@
 """Integration test for application startup and basic functionality."""
 
-import pytest
-from unittest.mock import MagicMock, patch
 import tkinter as tk
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 
 class TestApplicationStartup:
@@ -11,10 +12,10 @@ class TestApplicationStartup:
     def test_gui_imports(self):
         """Test that all GUI modules can be imported."""
         from optim_analyser.app.app import App
-        from optim_analyser.app.appMenu import Menu
-        from optim_analyser.app.appDisplayRun import DisplayRun
         from optim_analyser.app.appCompare import Comparison
+        from optim_analyser.app.appDisplayRun import DisplayRun
         from optim_analyser.app.appForceBehavior import ForceBehavior
+        from optim_analyser.app.appMenu import Menu
 
         # If imports succeed, test passes
         assert App is not None
@@ -22,28 +23,21 @@ class TestApplicationStartup:
 
     def test_analysis_modules_import(self):
         """Test that analysis modules can be imported."""
-        from optim_analyser.analysis import analyse
-        from optim_analyser.analysis import display
-        from optim_analyser.analysis import compare
-        from optim_analyser.analysis import colors
+        from optim_analyser.analysis import analyse, colors, compare, display
 
         assert analyse is not None
         assert display is not None
 
     def test_optim_modules_import(self):
         """Test that optimization modules can be imported."""
-        from optim_analyser.optim import dataframes
-        from optim_analyser.optim import optimization
-        from optim_analyser.optim import path
-        from optim_analyser.optim import replay
+        from optim_analyser.optim import dataframes, optimization, path, replay
 
         assert dataframes is not None
         assert optimization is not None
 
     def test_ibm_modules_import(self):
         """Test that IBM modules can be imported."""
-        from optim_analyser.ibm import optimizationIBM
-        from optim_analyser.ibm import jobWMLRestClient
+        from optim_analyser.ibm import jobWMLRestClient, optimizationIBM
 
         assert optimizationIBM is not None
         assert jobWMLRestClient is not None
@@ -86,8 +80,9 @@ class TestApplicationStartup:
 
     def test_resource_paths_are_valid(self):
         """Test that resource path resolution works."""
-        from optim_analyser.optim.path import resource_path
         from pathlib import Path
+
+        from optim_analyser.optim.path import resource_path
 
         # Test that the function returns a path
         config_path = resource_path(["config"])
@@ -99,8 +94,8 @@ class TestApplicationStartup:
 
     def test_no_legacy_imports_in_codebase(self):
         """Test that no files use legacy import patterns."""
-        from pathlib import Path
         import re
+        from pathlib import Path
 
         src_dir = Path(__file__).parent.parent.parent / "src" / "optim_analyser"
 
@@ -161,7 +156,7 @@ class TestErrorHandling:
 
     def test_custom_exceptions_exist(self):
         """Test that custom exception classes are defined."""
-        from optim_analyser.errors import OptimizationFail, ModelReferenceError
+        from optim_analyser.errors import ModelReferenceError, OptimizationFail
 
         assert issubclass(OptimizationFail, Exception)
         assert issubclass(ModelReferenceError, Exception)

@@ -1,11 +1,12 @@
-import zipfile
 import http.client
-import requests
-import urllib.parse
 import json
 import os
-from os import access, R_OK, W_OK, F_OK
+import urllib.parse
+import zipfile
+from os import F_OK, R_OK, W_OK, access
 from os.path import isfile
+
+import requests
 
 
 class WMLModelDeploymentClient:

@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 
-from optim_analyser.optim.path import output_path
 from optim_analyser.analysis import analyse
-from optim_analyser.app.appOptimJob import OptimJob
 from optim_analyser.app import appOptimJob
+from optim_analyser.app.appOptimJob import OptimJob
+from optim_analyser.optim.path import output_path
 
 
 class Comparison(ttk.Frame):

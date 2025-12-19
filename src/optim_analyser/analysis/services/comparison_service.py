@@ -7,10 +7,10 @@ import os
 from pathlib import Path
 from typing import List
 
-from optim_analyser.optim import dataframes, path
 from optim_analyser.analysis import compare
-from optim_analyser.models import ComparisonResult, ComparisonConfig, OptimizationJob, JobStatus
 from optim_analyser.errors import DataError, VisualizationError
+from optim_analyser.models import ComparisonConfig, ComparisonResult, JobStatus, OptimizationJob
+from optim_analyser.optim import dataframes, path
 
 
 class ComparisonService:

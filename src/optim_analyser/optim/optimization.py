@@ -1,11 +1,12 @@
-import pandas as pd
-import shutil
 import os
-from datetime import datetime
+import shutil
 import subprocess
+from datetime import datetime
 
-from optim_analyser.optim.dataframes import dataframe_to_excel
+import pandas as pd
+
 from optim_analyser.errors import ModelReferenceError
+from optim_analyser.optim.dataframes import dataframe_to_excel
 
 
 def get_column_from_int(n: int) -> str:

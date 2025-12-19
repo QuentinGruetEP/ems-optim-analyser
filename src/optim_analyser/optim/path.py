@@ -1,9 +1,10 @@
-import os
-import pandas as pd
 import json
+import os
 import sys
-import yaml
 from pathlib import Path
+
+import pandas as pd
+import yaml
 
 from optim_analyser.errors import ModelReferenceError
 

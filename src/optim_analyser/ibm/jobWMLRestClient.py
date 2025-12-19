@@ -1,10 +1,9 @@
-from typing import Optional, Union
 import http.client
 import json
-from time import sleep
-from datetime import datetime, timedelta
 import urllib.parse
-from datetime import timedelta
+from datetime import datetime, timedelta
+from time import sleep
+from typing import Optional, Union
 
 
 class WMLJobClient:

@@ -1,18 +1,18 @@
-import ttkthemes
-import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox
-from tkinter.filedialog import askdirectory, askopenfilename
-import yaml
 import sys
 import threading
+import tkinter as tk
+from tkinter import messagebox, ttk
+from tkinter.filedialog import askdirectory, askopenfilename
 
-from optim_analyser.optim.path import resource_path
+import ttkthemes
+import yaml
+
+from optim_analyser.app import checkUpdates
 from optim_analyser.app.appCompare import Comparison
-from optim_analyser.app.appMenu import Menu
 from optim_analyser.app.appDisplayRun import DisplayRun
 from optim_analyser.app.appForceBehavior import ForceBehavior
-from optim_analyser.app import checkUpdates
+from optim_analyser.app.appMenu import Menu
+from optim_analyser.optim.path import resource_path
 
 
 class App(ttkthemes.ThemedTk):

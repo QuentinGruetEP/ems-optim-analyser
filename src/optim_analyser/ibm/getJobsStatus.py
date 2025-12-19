@@ -1,4 +1,5 @@
-from typing import Optional, Union, Callable, Tuple, List, Any
+from typing import Any, Callable, List, Optional, Tuple, Union
+
 from optim_analyser.ibm.jobWMLRestClient import WMLJobClient
 
 

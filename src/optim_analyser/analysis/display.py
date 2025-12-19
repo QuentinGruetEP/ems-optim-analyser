@@ -1,12 +1,13 @@
-import pandas as pd
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
 from datetime import datetime, timedelta
 
-from optim_analyser.optim import dataframes
+import pandas as pd
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
 from optim_analyser.analysis import subplot
-from optim_analyser.analysis.colors import color_map_costs, color_map_default, color_blind_map
+from optim_analyser.analysis.colors import color_blind_map, color_map_costs, color_map_default
 from optim_analyser.errors import OptimizationFail
+from optim_analyser.optim import dataframes
 
 
 def get_df(

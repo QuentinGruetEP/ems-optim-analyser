@@ -3,13 +3,14 @@
 Tests the DisplayService, ReplayService, and ComparisonService classes.
 """
 
-import pytest
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import MagicMock, Mock, patch
 
-from optim_analyser.analysis.services import DisplayService, ReplayService, ComparisonService
-from optim_analyser.models import VisualizationResult, ComparisonResult, JobStatus
-from optim_analyser.errors import DataError, OptimizationFail, IBMJobError, VisualizationError
+import pytest
+
+from optim_analyser.analysis.services import ComparisonService, DisplayService, ReplayService
+from optim_analyser.errors import DataError, IBMJobError, OptimizationFail, VisualizationError
+from optim_analyser.models import ComparisonResult, JobStatus, VisualizationResult
 
 
 class TestDisplayService:

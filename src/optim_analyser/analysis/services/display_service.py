@@ -7,10 +7,10 @@ interface for rendering optimization data to HTML visualizations.
 from pathlib import Path
 from typing import Optional
 
-from optim_analyser.optim import dataframes, path
 from optim_analyser.analysis import display
-from optim_analyser.models import DisplayConfig, OptimizationData, VisualizationResult
 from optim_analyser.errors import DataError, VisualizationError
+from optim_analyser.models import DisplayConfig, OptimizationData, VisualizationResult
+from optim_analyser.optim import dataframes, path
 
 
 class DisplayService:

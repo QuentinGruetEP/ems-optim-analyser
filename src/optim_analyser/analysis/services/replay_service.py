@@ -6,11 +6,11 @@ This service encapsulates replay logic for both local (CPLEX) and remote (IBM) e
 from pathlib import Path
 from typing import Optional
 
-from optim_analyser.optim import dataframes, path, optimization, replay
 from optim_analyser.analysis import display
+from optim_analyser.errors import IBMJobError, OptimizationFail
 from optim_analyser.ibm import optimizationIBM
 from optim_analyser.models import OptimizationMode, ReplayConfig, VisualizationResult
-from optim_analyser.errors import OptimizationFail, IBMJobError
+from optim_analyser.optim import dataframes, optimization, path, replay
 
 
 class ReplayService:

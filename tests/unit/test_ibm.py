@@ -1,11 +1,13 @@
 """Unit tests for IBM Watson ML integration."""
 
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
+
 from optim_analyser.ibm.optimizationIBM import (
     create_model_and_deployment_distant,
-    run_optimization_distant,
     delete_deployment_and_model_distant,
+    run_optimization_distant,
 )
 
 

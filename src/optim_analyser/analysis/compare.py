@@ -1,11 +1,12 @@
-import pandas as pd
-import numpy as np
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
 from optim_analyser.analysis import subplot
-from optim_analyser.analysis.colors import color_map_costs, color_map_default, color_blind_map
+from optim_analyser.analysis.colors import color_blind_map, color_map_costs, color_map_default
 from optim_analyser.analysis.display import get_df
 
 
@@ -39,7 +40,8 @@ def combine_plotly_figs_to_html(
             f.write(fig.to_html(full_html=False, include_plotlyjs=False))
 
     if auto_open:
-        import pathlib, webbrowser
+        import pathlib
+        import webbrowser
 
         uri = pathlib.Path(html_fname).absolute().as_uri()
         webbrowser.open(uri)

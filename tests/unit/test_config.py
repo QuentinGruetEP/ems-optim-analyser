@@ -1,8 +1,10 @@
 """Unit tests for configuration management."""
 
-import pytest
 import os
 from pathlib import Path
+
+import pytest
+
 from optim_analyser.config import Config, load_config, load_env_file
 
 

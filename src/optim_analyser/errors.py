@@ -4,7 +4,7 @@ All application-specific errors inherit from OptimAnalyserError.
 Errors include context and error codes for better debugging and user feedback.
 """
 
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
 
 class OptimAnalyserError(Exception):

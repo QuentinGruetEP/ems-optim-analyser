@@ -1,7 +1,7 @@
 import pandas as pd
 
-from optim_analyser.optim import optimization, dataframes
 from optim_analyser.errors import OptimizationFail
+from optim_analyser.optim import dataframes, optimization
 
 
 def replay_optimization(model_path: str, dat_path: str, data: dict[str, pd.DataFrame], excel_output_path: str) -> None:

@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-
-from optim_analyser.app.appDisplayRun import DisplayRun
 from optim_analyser.app.appCompare import Comparison
+from optim_analyser.app.appDisplayRun import DisplayRun
 from optim_analyser.app.appForceBehavior import ForceBehavior
 
 

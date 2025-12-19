@@ -1,8 +1,8 @@
-from time import sleep
 import json
 import os
+from time import sleep
 
-from optim_analyser.ibm import modelDeploymentWithRestClient, jobWMLRestClient, getJobsStatus
+from optim_analyser.ibm import getJobsStatus, jobWMLRestClient, modelDeploymentWithRestClient
 
 
 def create_model_and_deployment_distant(
