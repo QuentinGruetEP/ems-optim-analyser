@@ -1,0 +1,25 @@
+# Requirements for Optim Analyser
+# Install with: pip install -r requirements.txt
+# Or use: pip install -e .
+
+# Core dependencies
+certifi==2025.1.31
+charset-normalizer==3.4.1
+et-xmlfile==2.0.0
+idna==3.10
+narwhals==1.24.1
+numpy==2.2.2
+openpyxl==3.1.5
+packaging==24.2
+pandas==2.2.3
+pillow==11.1.0
+plotly==6.0.0
+python-dateutil==2.9.0
+pytz==2025.1
+PyYAML==6.0.2
+requests==2.32.3
+setuptools==75.8.0
+six==1.17.0
+ttkthemes==3.2.2
+tzdata==2025.1
+urllib3==2.3.0
