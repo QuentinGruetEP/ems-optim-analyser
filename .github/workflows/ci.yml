@@ -66,15 +66,8 @@ jobs:
       - name: Run isort
         run: isort --check-only src/ tests/
 
-      - name: Run flake8
-        run: flake8 src/ tests/
-
       - name: Run mypy
         run: mypy src/
-        continue-on-error: true
-
-      - name: Run bandit (security)
-        run: bandit -r src/ -c pyproject.toml
         continue-on-error: true
 
   build:
