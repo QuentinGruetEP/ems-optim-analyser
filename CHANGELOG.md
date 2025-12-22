@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Initial release as standalone repository
-- Separated from ems-optimizer monorepo for independent lifecycle
+### Changed
+- **BREAKING**: Consolidated IBM Watson ML configuration - removed `IbmWatsonMLProperties.yml` in favor of `.env` file
+- All IBM credentials now loaded from environment variables via unified `Config` class
+- Simplified configuration management with single source of truth
+
+### Removed
+- `IbmWatsonMLProperties.yml` - replaced by `.env` configuration
+- `get_ibm_watson_ml_properties()` function - replaced by `load_config()`
+
+### Migration Guide
+- Copy all values from `IbmWatsonMLProperties.yml` to your `.env` file if not already present
+- Update any custom code using `get_ibm_watson_ml_properties()` to use `load_config().ibm.to_dict()`
 
 ## [1.0.0] - 2025-12-19
 

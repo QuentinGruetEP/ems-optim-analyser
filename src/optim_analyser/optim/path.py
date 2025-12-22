@@ -35,7 +35,6 @@ def output_path(output_folder_name: str):
 excel_plot_param_path = resource_path(["config", "plot_param.xlsx"])
 excel_deployment_list_path = resource_path(["config", "deployment_list.xlsx"])
 model_folder = resource_path(["models"])
-yml_ibm_watson_ml_properties_path = resource_path(["config", "IbmWatsonMLProperties.yml"])
 
 
 def get_plot_param_df(excel_plot_param_path: str) -> pd.DataFrame:
@@ -426,9 +425,3 @@ def get_compare_paths_json(
     html_path_comparison = os.path.join(os.path.dirname(html_path_basic), html_basic_filename + "_comparison.html")
 
     return html_path_comparison, plot_param
-
-
-def get_ibm_watson_ml_properties():
-    with open(yml_ibm_watson_ml_properties_path, "r") as file:
-        ibm_watson_ml_properties = yaml.safe_load(file)["ibmwatsonml"]
-    return ibm_watson_ml_properties

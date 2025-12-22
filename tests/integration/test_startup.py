@@ -129,7 +129,6 @@ class TestApplicationStartup:
 
         # Define files that should ONLY be in resources/, not in src/
         expected_only_in_resources = [
-            ("IbmWatsonMLProperties.yml", "resources/config", "src/optim_analyser/ibm"),
             ("UpdateProperties.yml", "resources/config", "src/optim_analyser/app"),
             ("ep_icon.png", "resources/icons", "src/optim_analyser/app"),
         ]

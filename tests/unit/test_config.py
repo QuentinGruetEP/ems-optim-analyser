@@ -47,8 +47,13 @@ class TestConfig:
         assert os.getenv("TEST_VAR") == "test_value"
         assert os.getenv("ANOTHER_VAR") == "another_value"
 
-    def test_load_config_with_missing_credentials(self):
+    def test_load_config_with_missing_credentials(self, monkeypatch):
         """Test that missing credentials produce a warning but don't fail."""
+        # Clear IBM credentials from environment
+        monkeypatch.delenv("IBM_API_KEY", raising=False)
+        monkeypatch.delenv("IBM_SPACE_ID", raising=False)
+        
         with pytest.warns(UserWarning, match="IBM Watson ML credentials not configured"):
-            config = load_config()
+            # Pass a non-existent file to prevent loading from actual .env
+            config = load_config(env_file="nonexistent.env")
             assert config is not None

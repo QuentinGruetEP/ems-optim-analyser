@@ -4,6 +4,7 @@ import time
 import tkinter as tk
 
 from optim_analyser.analysis import compare, display
+from optim_analyser.config import load_config
 from optim_analyser.ibm import optimizationIBM
 from optim_analyser.optim import dataframes, optimization, path, replay
 
@@ -565,7 +566,8 @@ def run_from_excel_and_display_distant(
     :type color_blind: bool, optional
     """
 
-    ibm_watson_ml_properties = path.get_ibm_watson_ml_properties()
+    config = load_config()
+    ibm_watson_ml_properties = config.to_dict()
 
     data = dataframes.excel_to_dataframe(excel_input_path)
     input_data = dataframes.get_cloud_input_from_dataframe(data)
@@ -645,7 +647,8 @@ def replay_from_json_and_display_distant(
     :type color_blind: bool, optional
     """
 
-    ibm_watson_ml_properties = path.get_ibm_watson_ml_properties()
+    config = load_config()
+    ibm_watson_ml_properties = config.to_dict()
 
     # Load data from .json
     data = dataframes.json_to_dataframe(json_path)
@@ -725,7 +728,8 @@ def run_scenarios_distant(model_id: str, deployment_id: str, excel_folder_path: 
     :type sc_list: list[str]
     """
 
-    ibm_watson_ml_properties = path.get_ibm_watson_ml_properties()
+    config = load_config()
+    ibm_watson_ml_properties = config.to_dict()
 
     for sc_name in sc_list:
         print(sc_name)
@@ -766,7 +770,8 @@ def run_scenarios_from_folder_distant(
     :type add_costs: bool, optional
     """
 
-    ibm_watson_ml_properties = path.get_ibm_watson_ml_properties()
+    config = load_config()
+    ibm_watson_ml_properties = config.to_dict()
 
     if sc_list == None:
         sc_list = [f.name for f in os.scandir(excel_folder_path) if f.is_dir()]
