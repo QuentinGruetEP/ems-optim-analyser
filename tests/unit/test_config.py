@@ -52,7 +52,7 @@ class TestConfig:
         # Clear IBM credentials from environment
         monkeypatch.delenv("IBM_API_KEY", raising=False)
         monkeypatch.delenv("IBM_SPACE_ID", raising=False)
-        
+
         with pytest.warns(UserWarning, match="IBM Watson ML credentials not configured"):
             # Pass a non-existent file to prevent loading from actual .env
             config = load_config(env_file="nonexistent.env")
