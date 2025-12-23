@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import sys
 import threading
 import tkinter as tk
@@ -79,7 +81,7 @@ class App(ttkthemes.ThemedTk):
 
     def init_update_path(self):
         try:
-            base_path = sys._MEIPASS
+            base_path = sys._MEIPASS  # type: ignore[attr-defined]  # PyInstaller runtime attribute
             # No exception thrown means the program has been launched with an executable : need to check if files are up-to-date
             with open(self.update_properties_path, "r") as file:
                 self.update_properties = yaml.safe_load(file)
@@ -100,7 +102,7 @@ class App(ttkthemes.ThemedTk):
 
     def update(self):
         try:
-            base_path = sys._MEIPASS
+            base_path = sys._MEIPASS  # type: ignore[attr-defined]  # PyInstaller runtime attribute
             # No exception thrown means the program has been launched with an executable : need to check if files are up-to-date
             checkUpdates.update(self.update_properties, self.frames[Menu].label_txt_update_info)
         except AttributeError:
