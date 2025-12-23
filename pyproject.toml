@@ -7,7 +7,7 @@ name = "optim-analyser"
 version = "1.0.0"
 description = "Optimization analysis and visualization tool for EMS microgrid operations"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.13"
 license = {text = "Proprietary"}
 authors = [
     {name = "Energy Pool", email = "dev@energypool.eu"}
@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
 ]
 
 dependencies = [

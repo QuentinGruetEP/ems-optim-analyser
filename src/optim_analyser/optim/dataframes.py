@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import os
 
@@ -159,12 +161,12 @@ def dataframe_to_csvs(dataframe: dict[str, pd.DataFrame], output_folder: str) ->
         sheet_data.to_csv(csv_file_path, index=False)
 
 
-def get_cloud_input_from_dataframe(input_data: dict[pd.DataFrame]) -> list[dict]:
+def get_cloud_input_from_dataframe(input_data: dict[str, pd.DataFrame]) -> list[dict]:
     """
     Get the formatted optimization input data that can be used to create a job on IBM cloud
 
     :param input_data: The dictionnary containing the names of the input datasheets and their content
-    :type input_data: dict[pd.DataFrame]
+    :type input_data: dict[str, pd.DataFrame]
     :return: The list containing the formatted input data required to run the job
     :rtype: list[dict]
     """

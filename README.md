@@ -74,24 +74,58 @@ See [docs/architecture.md](docs/architecture.md) for technical details.
 
 ## Development
 
-```bash
-# Setup
-pip install -e ".[dev]"
-pre-commit install
+### Environment Setup
 
+**IMPORTANT**: Always use the virtual environment to avoid dependency and Python version conflicts.
+
+```bash
+# 1. Create and activate virtual environment
+python -m venv .venv
+
+# Windows:
+.venv\Scripts\activate
+
+# Linux/Mac:
+source .venv/bin/activate
+
+# 2. Install development dependencies
+pip install -e ".[dev,build]"
+
+# 3. Setup pre-commit hooks
+pre-commit install
+```
+
+**Verify Setup**:
+```bash
+# Check Python version (should be 3.10, 3.11, or 3.12)
+python --version
+
+# Check all dependencies installed
+python -c "import yaml, plotly, ttkthemes, pytest; print('✓ All imports OK')"
+```
+
+### Testing & Quality
+
+```bash
 # Test
 pytest                                          # All tests
 pytest --cov=optim_analyser --cov-report=html  # With coverage
 
-# Quality checks (runs on commit)
+# Quality checks (runs on commit via pre-commit)
 black src/ tests/                               # Format
 mypy src/                                       # Type check
 flake8 src/ tests/                              # Lint
-bandit -r src/                                  # Security scan
+pre-commit run --all-files                      # Run all hooks
 
 # Build standalone .exe
+pip install -e ".[build]"
 python scripts/build_executable.py
 ```
+
+### Python Version Support
+
+- **Supported**: Python 3.10, 3.11, 3.12
+- **Not supported**: Python 3.13+ (not yet tested)
 
 ## Troubleshooting
 
