@@ -36,7 +36,11 @@ def display_from_json(json_path: str, output_folder: str, color_blind: bool = Fa
 
 
 def display_from_excel(
-    excel_input_path: str, excel_output_path: str, output_folder: str, sc_name: str | None = None, color_blind: bool = False
+    excel_input_path: str,
+    excel_output_path: str,
+    output_folder: str,
+    sc_name: str | None = None,
+    color_blind: bool = False,
 ) -> None:
     """
     Display the optimization job from the Excel files and save the results in the output folder

@@ -29,7 +29,7 @@ class TestConfig:
         monkeypatch.delenv("APP_THEME", raising=False)
         monkeypatch.setenv("IBM_API_KEY", "")
         monkeypatch.setenv("IBM_SPACE_ID", "")
-        
+
         config = Config.from_env()
 
         assert config.ibm.api_domain == "https://eu-de.ml.cloud.ibm.com"
