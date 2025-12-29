@@ -300,7 +300,7 @@ def run_scenarios_from_folder_local(
 
     if sc_list == None:
         sc_list = [f.name for f in os.scandir(excel_folder_path) if f.is_dir()]
-    
+
     if not sc_list:
         raise ValueError(f"No scenario folders found in {excel_folder_path}")
 
@@ -373,7 +373,7 @@ def display_scenarios(
     # Display all scenarios in subfolders by default
     if sc_list == None:
         sc_list = [f.name for f in os.scandir(excel_folder_path) if f.is_dir()]
-    
+
     if not sc_list:
         raise ValueError(f"No scenario folders found in {excel_folder_path}")
 
@@ -787,7 +787,7 @@ def run_scenarios_from_folder_distant(
 
     if sc_list == None:
         sc_list = [f.name for f in os.scandir(excel_folder_path) if f.is_dir()]
-    
+
     if not sc_list:
         raise ValueError(f"No scenario folders found in {excel_folder_path}")
 
