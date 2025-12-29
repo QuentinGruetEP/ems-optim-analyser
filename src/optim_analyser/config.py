@@ -17,7 +17,7 @@ class IBMConfig:
 
     api_key: str
     space_id: str
-    api_domain: str = "https://us-south.ml.cloud.ibm.com"
+    api_domain: str = "https://eu-de.ml.cloud.ibm.com"
     iam_domain: str = "https://iam.cloud.ibm.com"
     hardware_spec_name: str = "S"
     hardware_spec_num_nodes: int = 1
@@ -66,7 +66,7 @@ class Config:
         ibm = IBMConfig(
             api_key=os.getenv("IBM_API_KEY", ""),
             space_id=os.getenv("IBM_SPACE_ID", ""),
-            api_domain=os.getenv("IBM_API_DOMAIN", "https://us-south.ml.cloud.ibm.com"),
+            api_domain=os.getenv("IBM_API_DOMAIN", "https://eu-de.ml.cloud.ibm.com"),
             iam_domain=os.getenv("IBM_IAM_DOMAIN", "https://iam.cloud.ibm.com"),
             hardware_spec_name=os.getenv("IBM_HARDWARE_SPEC_NAME", "S"),
             hardware_spec_num_nodes=int(os.getenv("IBM_HARDWARE_SPEC_NUM_NODES", "1")),

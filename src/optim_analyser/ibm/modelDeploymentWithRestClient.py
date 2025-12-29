@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import http.client
 import json
 import os
@@ -164,7 +166,7 @@ class WMLModelDeploymentClient:
             response.close()
 
     # Method that allows to create deployments from a given model
-    def deployAssetOnWml(self, modelId: str, iamToken: str = None) -> str:
+    def deployAssetOnWml(self, modelId: str, iamToken: str | None = None) -> str:
         iamToken = self.getIAMToken() if iamToken is None else iamToken
         try:
             httpsConnection = http.client.HTTPSConnection(self.wmlCredentials["url_API"])
@@ -271,7 +273,7 @@ class WMLModelDeploymentClient:
         return modelIdName
 
     # Method that allows to delete deployments from a given model
-    def deleteDeploymentOnWml(self, deploymentId: str, iamToken: str = None) -> str:
+    def deleteDeploymentOnWml(self, deploymentId: str, iamToken: str | None = None) -> str:
         iamToken = self.getIAMToken() if iamToken is None else iamToken
         try:
             httpsConnection = http.client.HTTPSConnection(self.wmlCredentials["url_API"])
@@ -296,7 +298,7 @@ class WMLModelDeploymentClient:
             httpsConnection.close()
 
     # Method that allows to delete models
-    def deleteAssetOnWml(self, modelId: str, iamToken: str = None) -> str:
+    def deleteAssetOnWml(self, modelId: str, iamToken: str | None = None) -> str:
         iamToken = self.getIAMToken() if iamToken is None else iamToken
         try:
             httpsConnection = http.client.HTTPSConnection(self.wmlCredentials["url_API"])

@@ -21,11 +21,18 @@ class TestConfig:
         assert config.ibm.api_key == "test_key"
         assert config.ibm.space_id == "test_space"
 
-    def test_config_defaults(self):
+    def test_config_defaults(self, monkeypatch):
         """Test default configuration values."""
+        # Clear any environment variables that might be set by .env file
+        monkeypatch.delenv("IBM_API_DOMAIN", raising=False)
+        monkeypatch.delenv("IBM_HARDWARE_SPEC_NAME", raising=False)
+        monkeypatch.delenv("APP_THEME", raising=False)
+        monkeypatch.setenv("IBM_API_KEY", "")
+        monkeypatch.setenv("IBM_SPACE_ID", "")
+
         config = Config.from_env()
 
-        assert config.ibm.api_domain == "https://us-south.ml.cloud.ibm.com"
+        assert config.ibm.api_domain == "https://eu-de.ml.cloud.ibm.com"
         assert config.ibm.hardware_spec_name == "S"
         assert config.app.theme == "Arc"
 
