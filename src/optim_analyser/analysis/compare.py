@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -14,7 +16,7 @@ def combine_plotly_figs_to_html(
     plotly_figs: list[go.Figure],
     html_fname: str,
     include_plotlyjs="cdn",
-    separator: str = None,
+    separator: str | None = None,
     auto_open: bool = False,
 ) -> None:
     """
@@ -215,25 +217,25 @@ def compare_from_input_output_data(
         index=["initial", "forced", "diff"],
     )
     obj_func_df["violation_costs"] = [
-        obj_func_df.loc["initial", "optimiser_objective_value"] - obj_func_df.loc["initial", "tot_costs"],
-        obj_func_df.loc["forced", "optimiser_objective_value"] - obj_func_df.loc["forced", "tot_costs"],
-        obj_func_df.loc["diff", "optimiser_objective_value"] - obj_func_df.loc["diff", "tot_costs"],
+        obj_func_df.loc["initial", "optimiser_objective_value"] - obj_func_df.loc["initial", "tot_costs"],  # type: ignore[operator]
+        obj_func_df.loc["forced", "optimiser_objective_value"] - obj_func_df.loc["forced", "tot_costs"],  # type: ignore[operator]
+        obj_func_df.loc["diff", "optimiser_objective_value"] - obj_func_df.loc["diff", "tot_costs"],  # type: ignore[operator]
     ]
 
     if "violation_cost" in data_init["VIOLATIONS_OUTPUT"].columns:
         # Read and merge on violation type the violation costs for the initial solution
-        for violation_type in np.unique(data_init["VIOLATIONS_OUTPUT"]["violation_type"].values):
+        for violation_type in np.unique(data_init["VIOLATIONS_OUTPUT"]["violation_type"].values):  # type: ignore[arg-type]
             tot_costs_df.loc[violation_type, "tot_costs_init"] = (
                 data_init["VIOLATIONS_OUTPUT"]
                 .loc[data_init["VIOLATIONS_OUTPUT"]["violation_type"] == violation_type, "violation_cost"]
-                .sum()
+                .sum()  # type: ignore[union-attr]
             )
         # Read and merge on violation type the violation costs for the forced solution
-        for violation_type in np.unique(data_forced["VIOLATIONS_OUTPUT"]["violation_type"].values):
+        for violation_type in np.unique(data_forced["VIOLATIONS_OUTPUT"]["violation_type"].values):  # type: ignore[arg-type]
             tot_costs_df.loc[violation_type, "tot_costs_forced"] = (
                 data_forced["VIOLATIONS_OUTPUT"]
                 .loc[data_forced["VIOLATIONS_OUTPUT"]["violation_type"] == violation_type, "violation_cost"]
-                .sum()
+                .sum()  # type: ignore[union-attr]
             )
         tot_costs_df = tot_costs_df.fillna(0)
         for violation_type in np.unique(
@@ -242,7 +244,7 @@ def compare_from_input_output_data(
         ):
             tot_costs_df.loc[violation_type, "tot_costs_diff"] = (
                 tot_costs_df.loc[violation_type, "tot_costs_forced"]
-                - tot_costs_df.loc[violation_type, "tot_costs_init"]
+                - tot_costs_df.loc[violation_type, "tot_costs_init"]  # type: ignore[operator]
             )
 
     tot_costs_df.loc["violation_costs"] = [
@@ -253,7 +255,7 @@ def compare_from_input_output_data(
     for cost_name in tot_costs_df.index:
         if tot_costs_df.loc[cost_name, "tot_costs_init"] != 0:
             tot_costs_df.loc[cost_name, "costs_diff-costs_init_ratio"] = (
-                tot_costs_df.loc[cost_name, "tot_costs_diff"] / tot_costs_df.loc[cost_name, "tot_costs_init"]
+                tot_costs_df.loc[cost_name, "tot_costs_diff"] / tot_costs_df.loc[cost_name, "tot_costs_init"]  # type: ignore[operator]
             )
         else:
             tot_costs_df.loc[cost_name, "costs_diff-costs_init_ratio"] = 0
@@ -428,10 +430,10 @@ def compare_from_input_output_data(
 
     # Consumer convention by default in Everest -> Consumption > 0, Production < 0
     # 1 for consumer, -1 for producer
-    convention = subplots_param["convention"]
+    convention = int(subplots_param["convention"].iloc[0])  # type: ignore[arg-type]
 
     # Currency unit symbol, default is CU
-    currency_unit = subplots_param["currency_unit"]
+    currency_unit = str(subplots_param["currency_unit"].iloc[0])  # type: ignore[arg-type]
 
     # Create a subplot layout
     fig_classic = make_subplots(
@@ -473,13 +475,13 @@ def compare_from_input_output_data(
                 fig_classic,
                 color_map,
                 convention,
-                dates,
+                pd.Series(dates),  # type: ignore[arg-type]
                 assets_df_init,
                 asset_steps_power_df_diff,
                 pd.DataFrame(),
                 pd.DataFrame(),  # Considers that power_prediction will not be changed
                 maingrid_serie_diff,
-                subplots_param["maingrid"],
+                bool(subplots_param["maingrid"].iloc[0]),  # type: ignore[arg-type]
                 energy_vectors,
                 diff=True,
             )
@@ -491,10 +493,9 @@ def compare_from_input_output_data(
                 color_map_greyscale,
                 currency_unit,
                 convention,
-                dates,
+                pd.Series(dates),  # type: ignore[arg-type]
                 prices_df_init,
                 engagement_df_init,
-                subplots_param["spot_threshold"],
                 operation_steps_output_df_init,
             )
             subplot.plot_energy_market_prices_engagements(
@@ -503,10 +504,9 @@ def compare_from_input_output_data(
                 color_map,
                 currency_unit,
                 convention,
-                dates,
+                pd.Series(dates),  # type: ignore[arg-type]
                 prices_df_init,
                 engagement_df_diff,
-                subplots_param["spot_threshold"],
                 operation_steps_output_df_diff,
             )
         elif title == "Imbalances":
@@ -516,10 +516,10 @@ def compare_from_input_output_data(
                 fig_classic,
                 color_map_greyscale,
                 convention,
-                dates,
+                pd.Series(dates),  # type: ignore[arg-type]
                 engagement_df_init,
                 maingrid_serie_init,
-                operation_steps_output_df_init,
+                {"OPERATION_STEPS": operation_steps_output_df_init},  # type: ignore[dict-item]
                 storage_assets_df_init,
                 asset_steps_power_df_init,
             )
@@ -528,10 +528,10 @@ def compare_from_input_output_data(
                 fig_classic,
                 color_map,
                 convention,
-                dates,
+                pd.Series(dates),  # type: ignore[arg-type]
                 engagement_df_diff,
                 maingrid_serie_diff,
-                operation_steps_output_df_diff,
+                {"OPERATION_STEPS": operation_steps_output_df_diff},  # type: ignore[dict-item]
                 storage_assets_df_init,
                 asset_steps_power_df_diff,
             )
@@ -542,8 +542,8 @@ def compare_from_input_output_data(
                 fig_classic,
                 color_map,
                 convention,
-                dates,
-                operation_steps_df_init,
+                pd.Series(dates),  # type: ignore[arg-type]
+                {"OPERATION_STEPS": operation_steps_df_init},  # type: ignore[dict-item]
                 site_assets_df_init,
                 asset_steps_power_df_init,
                 assets_df_init,
@@ -556,8 +556,8 @@ def compare_from_input_output_data(
                 fig_classic,
                 color_map,
                 convention,
-                dates,
-                operation_steps_df_init,
+                pd.Series(dates),  # type: ignore[arg-type]
+                {"OPERATION_STEPS": operation_steps_df_init},  # type: ignore[dict-item]
                 site_assets_df_init,
                 asset_steps_power_df_forced,
                 assets_df_init,
@@ -571,7 +571,7 @@ def compare_from_input_output_data(
                 fig_classic,
                 color_map_greyscale,
                 currency_unit,
-                dates,
+                pd.Series(dates),  # type: ignore[arg-type]
                 storage_assets_df_init,
                 asset_steps_soc_df_init,
                 prices_df_init,
@@ -583,7 +583,7 @@ def compare_from_input_output_data(
                 fig_classic,
                 color_map,
                 currency_unit,
-                dates,
+                pd.Series(dates),  # type: ignore[arg-type]
                 storage_assets_df_init,
                 asset_steps_soc_df_diff,
                 prices_df_init,
@@ -593,10 +593,10 @@ def compare_from_input_output_data(
             )
         elif title == "Assets availability":
             subplot.plot_asset_availability(
-                row, fig_classic, color_map_greyscale, dates, assets_df_init, asset_steps_availability_df_init
+                row, fig_classic, color_map_greyscale, pd.Series(dates), assets_df_init, asset_steps_availability_df_init  # type: ignore[arg-type]
             )
             subplot.plot_asset_availability(
-                row, fig_classic, color_map, dates, assets_df_init, asset_steps_availability_df_diff
+                row, fig_classic, color_map, pd.Series(dates), assets_df_init, asset_steps_availability_df_diff  # type: ignore[arg-type]
             )
     for index, title in enumerate(subplot_comp_titles):
         row = index + 1

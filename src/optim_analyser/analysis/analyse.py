@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import shutil
 import time
@@ -34,7 +36,7 @@ def display_from_json(json_path: str, output_folder: str, color_blind: bool = Fa
 
 
 def display_from_excel(
-    excel_input_path: str, excel_output_path: str, output_folder: str, sc_name: str = None, color_blind: bool = False
+    excel_input_path: str, excel_output_path: str, output_folder: str, sc_name: str | None = None, color_blind: bool = False
 ) -> None:
     """
     Display the optimization job from the Excel files and save the results in the output folder
@@ -134,7 +136,7 @@ def replay_from_json_and_display_local(
 def run_from_excel_and_display_local(
     excel_input_path: str,
     output_folder: str,
-    text_console: tk.Text = None,
+    text_console: tk.Text | None = None,
     add_costs: bool = True,
     color_blind: bool = False,
 ) -> None:
@@ -273,7 +275,7 @@ def run_scenarios_local(
 def run_scenarios_from_folder_local(
     excel_folder_path: str,
     output_folder: str,
-    sc_list: list[str] = None,
+    sc_list: list[str] | None = None,
     add_costs: bool = False,
     in_place: bool = True,
 ) -> None:
@@ -346,7 +348,7 @@ def run_scenarios_from_folder_local(
 
 
 def display_scenarios(
-    excel_folder_path: str, sc_list: list[str] = None, add_costs: bool = False, color_blind: bool = True
+    excel_folder_path: str, sc_list: list[str] | None = None, add_costs: bool = False, color_blind: bool = True
 ) -> None:
     """
     Display optimization results for every scenario folder contained in the Excel folder
@@ -460,7 +462,7 @@ def compare_from_excel(
     excel_output_init_path: str,
     excel_input_forced_path: str,
     excel_output_forced_path: str,
-    output_folder: str = None,
+    output_folder: str | None = None,
     color_blind: bool = False,
 ):
     """
@@ -507,7 +509,7 @@ def compare_from_json_excel(
     json_init_path: str,
     excel_input_forced_path: str,
     excel_output_forced_path: str,
-    output_folder: str = None,
+    output_folder: str | None = None,
     color_blind: bool = False,
 ):
     """
@@ -755,7 +757,7 @@ def run_scenarios_distant(model_id: str, deployment_id: str, excel_folder_path: 
 
 
 def run_scenarios_from_folder_distant(
-    excel_folder_path: str, output_folder: str, sc_list: list[str] = None, add_costs: bool = False
+    excel_folder_path: str, output_folder: str, sc_list: list[str] | None = None, add_costs: bool = False
 ) -> None:
     """
     Run the optimization in the distant environment with for each scenario (corresponding to a single optimization configuration) given in the list and located in a subfolder of the Excel folder path

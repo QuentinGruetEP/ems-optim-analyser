@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime, timedelta
 
 import pandas as pd
@@ -704,7 +706,7 @@ def plot_from_input_output_data(
 
 def plot_from_data(
     all_data: dict[str, pd.DataFrame],
-    sc_name: str,
+    sc_name: str | None,
     html_path: str,
     subplots_param: pd.DataFrame,
     color_blind: bool = False,
@@ -761,7 +763,7 @@ def plot_from_data(
 def plot_from_excel(
     excel_input_path: str,
     excel_output_path: str,
-    sc_name: str,
+    sc_name: str | None,
     html_path: str,
     client_param: pd.DataFrame,
     add_costs: bool = False,

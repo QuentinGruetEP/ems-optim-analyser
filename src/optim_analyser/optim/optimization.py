@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import shutil
 import subprocess
@@ -518,7 +520,7 @@ def create_dat_file(
     excel_input_path: str,
     excel_output_path: str,
     add_costs: bool = True,
-    dat_costs_extension_path: str = None,
+    dat_costs_extension_path: str | None = None,
 ) -> None:
     """
     Create and save the .dat file linked to the input data and empty output Excel files
@@ -648,7 +650,7 @@ def create_dat_file(
 
 
 def copy_model(
-    mod_file: str, copied_model_path: str, add_costs: bool = True, mod_costs_extension_path: str = None
+    mod_file: str, copied_model_path: str, add_costs: bool = True, mod_costs_extension_path: str | None = None
 ) -> None:
     """
     Create copy of the original model used in IBM cloud with additional code to add the detailed costs in the optimization output
@@ -680,8 +682,8 @@ def prepare_optimization(
     dat_path: str,
     excel_output_path: str,
     add_costs=True,
-    mod_costs_extension_path: str = None,
-    dat_costs_extension_path: str = None,
+    mod_costs_extension_path: str | None = None,
+    dat_costs_extension_path: str | None = None,
 ) -> None:
     """
     Create and save all files needed to run the OPL model
